@@ -1,5 +1,6 @@
 #include "SampleGrabberCallback.h"
 #include "ImageFormatConversion.h"
+#include "common.h"
 
 SampleGrabberCallback::SampleGrabberCallback()
 {
@@ -34,7 +35,6 @@ HRESULT STDMETHODCALLTYPE SampleGrabberCallback::QueryInterface(REFIID riid,void
 		return S_OK;
 	}
 	return E_NOTIMPL;
-
 }
 
 HRESULT STDMETHODCALLTYPE SampleGrabberCallback::SampleCB(double Time, IMediaSample *pSample)
@@ -48,6 +48,8 @@ HRESULT STDMETHODCALLTYPE SampleGrabberCallback::BufferCB(double Time, BYTE *pBu
 		return S_FALSE;
 	if(!pBuffer)
 		return E_POINTER;
+
+	logA("tomxue: BufferLen = %d\n", BufferLen);
 
 	SaveBitmap(pBuffer,BufferLen);
 
@@ -94,7 +96,7 @@ BOOL SampleGrabberCallback::SaveBitmap(BYTE * pBuffer, long lBufferSize )
 	//Write the file Data
 	WriteFile( hf, pBuffer, lBufferSize, &dwWritten, NULL );
 	CloseHandle( hf );
-	Sleep(1000);
+	//Sleep(2000);	// added by tomxue
 
 //	// Í¬Ê±±£´æjpgÍ¼Æ¬
 //	char szSrcFileName[MAX_PATH];

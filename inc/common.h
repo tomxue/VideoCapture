@@ -20,4 +20,11 @@
 void Msg(HWND hwnd,TCHAR *szFormat, ...);
 bool Bstr_Compare(BSTR bstrFilter,BSTR bstrDevice);
 
+inline void logA(const char* format, ...)
+{
+	char buf[1024];
+	wvsprintfA(buf, format, ((char*)&format) + sizeof(void*));
+	OutputDebugStringA(buf);
+}
+
 #endif// __COMMON_H__
