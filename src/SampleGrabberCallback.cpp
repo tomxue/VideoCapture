@@ -65,7 +65,7 @@ BOOL SampleGrabberCallback::SaveBitmap(BYTE * pBuffer, long lBufferSize )
 					sysTime.wMinute,sysTime.wSecond,sysTime.wMilliseconds);
 	StringCchCat(m_chSwapStr,MAX_PATH,m_chDirName);
 	// %temp%/CaptureBmp/*
-	//MessageBox(NULL,chTempPath,TEXT("Message"),MB_OK);
+	//MessageBox(NULL, m_chTempPath,TEXT("Message"),MB_OK);
 	//create picture file
 	HANDLE hf = CreateFile(m_chSwapStr,GENERIC_WRITE,FILE_SHARE_WRITE,NULL,
 		CREATE_ALWAYS,0,NULL);
@@ -94,36 +94,37 @@ BOOL SampleGrabberCallback::SaveBitmap(BYTE * pBuffer, long lBufferSize )
 	//Write the file Data
 	WriteFile( hf, pBuffer, lBufferSize, &dwWritten, NULL );
 	CloseHandle( hf );
+	Sleep(1000);
 
-	// 同时保存jpg图片
-	char szSrcFileName[MAX_PATH];
-	char szDstFileName[MAX_PATH];
-	memset(szSrcFileName, 0, sizeof(char)*(MAX_PATH));
-	memset(szDstFileName, 0, sizeof(char)*(MAX_PATH));
-#ifdef _UNICODE
-	DWORD num = WideCharToMultiByte(CP_ACP, 0, m_chSwapStr, -1, NULL, 0, NULL, 0);
-	char *pbuf = NULL;
-	pbuf = (char*)malloc(num * sizeof(char)) + 1;
-	if (pbuf == NULL)
-	{
-	    free(pbuf);
-		return false;
-	}
-	memset(pbuf, 0, num * sizeof(char) + 1);
-	WideCharToMultiByte(CP_ACP, 0, m_chSwapStr, -1, pbuf, num, NULL, 0);
-#else
-	pbuf = (char*)m_chSwapStr;
-#endif
-
-	size_t len = strlen(pbuf);
-	memcpy(szSrcFileName, pbuf, len);
-	memcpy(szDstFileName, pbuf, len);
-	memcpy(szDstFileName + len - 3, "jpg", 3);
-	CImageFormatConversion	ifc;
-	bool bRet = ifc.ToJpg(szSrcFileName, szDstFileName, 100);
-
-	memcpy(szDstFileName + len - 3, "png", 3);
-	bRet = ifc.ToPng(szSrcFileName, szDstFileName);
+//	// 同时保存jpg图片
+//	char szSrcFileName[MAX_PATH];
+//	char szDstFileName[MAX_PATH];
+//	memset(szSrcFileName, 0, sizeof(char)*(MAX_PATH));
+//	memset(szDstFileName, 0, sizeof(char)*(MAX_PATH));
+//#ifdef _UNICODE
+//	DWORD num = WideCharToMultiByte(CP_ACP, 0, m_chSwapStr, -1, NULL, 0, NULL, 0);
+//	char *pbuf = NULL;
+//	pbuf = (char*)malloc(num * sizeof(char)) + 1;
+//	if (pbuf == NULL)
+//	{
+//	    free(pbuf);
+//		return false;
+//	}
+//	memset(pbuf, 0, num * sizeof(char) + 1);
+//	WideCharToMultiByte(CP_ACP, 0, m_chSwapStr, -1, pbuf, num, NULL, 0);
+//#else
+//	pbuf = (char*)m_chSwapStr;
+//#endif
+//
+//	size_t len = strlen(pbuf);
+//	memcpy(szSrcFileName, pbuf, len);
+//	memcpy(szDstFileName, pbuf, len);
+//	memcpy(szDstFileName + len - 3, "jpg", 3);
+//	CImageFormatConversion	ifc;
+//	bool bRet = ifc.ToJpg(szSrcFileName, szDstFileName, 100);
+//
+//	memcpy(szDstFileName + len - 3, "png", 3);
+//	bRet = ifc.ToPng(szSrcFileName, szDstFileName);
 
 	return TRUE;
 }
